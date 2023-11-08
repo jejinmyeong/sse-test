@@ -1,0 +1,28 @@
+.formfield-container {
+  display: flex;
+  align-items: center;
+  max-width: 740px;
+  width: calc(100% - 10px);
+  padding: 0.5rem 0;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow:
+    rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.42) 0px 2px 16px 0px;
+
+  textarea {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 0 40px 0 12px;
+    box-sizing: border-box;
+    max-height: 8rem;
+    resize: none;
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+  }
+}
+.empty {
+  height: 2.5rem;
+}

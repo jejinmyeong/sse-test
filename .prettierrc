@@ -1,0 +1,21 @@
+{
+  "singleQuote": true,
+  "printWidth": 100,
+  "arrowParens": "always",
+  "endOfLine": "auto",
+  "one-line": false,
+  "overrides": [
+    {
+      "files": [
+        "*.css",
+        "*.scss"
+      ],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ],
+  "breakBeforeElse": true,
+  "semi": true,
+  "tabWidth": 2
+}
