@@ -42,22 +42,22 @@ const conversationSlice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(getPrevConversationAsyncThunk.fulfilled, (state, { payload }) => {
-      // if (payload) {
-      //   state.prevConversationList = [
-      //     ...payload.prevConversationList,
-      //     ...state.prevConversationList,
-      //   ];
-      //   state.nextOffset = payload.offset;
-      //   state.isEnd = payload.isEnd;
-      // }
       if (payload) {
         state.prevConversationList = [
+          ...payload.prevConversationList,
           ...state.prevConversationList,
-          ...payload.prevConversationList.reverse(),
         ];
         state.nextOffset = payload.offset;
         state.isEnd = payload.isEnd;
       }
+      // if (payload) {
+      //   state.prevConversationList = [
+      //     ...state.prevConversationList,
+      //     ...payload.prevConversationList.reverse(),
+      //   ];
+      //   state.nextOffset = payload.offset;
+      //   state.isEnd = payload.isEnd;
+      // }
       state.isLoading = true;
     });
   },

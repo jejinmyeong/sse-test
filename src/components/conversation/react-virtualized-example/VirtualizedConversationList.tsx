@@ -5,10 +5,7 @@ import DynamicHeightList from './DynamicHeightList';
 const VirtualizedConversationList = () => {
   return (
     <AutoSizer>
-      {({ height, width }) => {
-        console.log(height, width);
-        return <DynamicHeightList width={width} height={height} />;
-      }}
+      {({ height, width }) => <DynamicHeightList width={width} height={height} />}
     </AutoSizer>
   );
 };

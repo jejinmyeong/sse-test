@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
 import { VirtuosoHandle } from 'react-virtuoso';
 
 interface ResizeObserverHandler<T> {
@@ -11,13 +11,13 @@ export const useResizeObserver = <T>({ ref, callback, isResize }: ResizeObserver
   const [height, setHeight] = useState(0);
   const [top, setTop] = useState(0);
 
-  const observer = new ResizeObserver((entries) => handleResize(entries));
-
   const handleResize = useCallback(
     (entries: ResizeObserverEntry[]) => {
       if (!Array.isArray(entries) || !isResize) {
+        console.log('test');
         return;
       }
+
       const entry = entries[0];
       const { height, top } = entry.contentRect;
 
@@ -25,27 +25,38 @@ export const useResizeObserver = <T>({ ref, callback, isResize }: ResizeObserver
       setHeight(() => height);
       setTop(() => top);
 
-      // if (callback) {
-      //   callback(entry);
-      // }
+      callback();
     },
     [callback, isResize],
   );
 
+  const observer = useMemo(() => new ResizeObserver(handleResize), [handleResize]);
+
   useEffect(() => {
-    if (isResize) observer.observe(ref.current as Element);
-    else observer.unobserve(ref.current as HTMLElement);
-  }, [isResize]);
+    if (isResize) {
+      console.log('등록됨2!');
+      observer.observe(ref.current as Element);
+      console.log(observer);
+    } else {
+      console.log('해제됨2');
+      observer.unobserve(ref.current as Element);
+      console.log(observer);
+    }
+  }, [observer, isResize]);
 
   useLayoutEffect(() => {
     // if (!ref.current) {
     //   return;
     // }
-    if (isResize) observer.observe(ref.current as HTMLElement);
+    // if (isResize) {
+    //   console.log('등록됨!');
+    //   observer.observe(ref.current as HTMLElement);
+    // }
     return () => {
+      console.log('해제됨');
       observer.disconnect();
     };
-  }, [ref]);
+  }, [observer, ref]);
 
   return { height, top };
 };

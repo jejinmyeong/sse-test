@@ -1,11 +1,16 @@
 import React from 'react';
+import { MessageDTO } from '../../store/modules/conversationSlice';
 
-const StreamMessage = () => {
+interface StreamMessageProps {
+  message?: MessageDTO;
+}
+
+const StreamMessage = React.forwardRef<HTMLDivElement, StreamMessageProps>(({ message }, ref) => {
   return (
-    <div>
-      <div></div>
+    <div ref={ref}>
+      <div>{message?.content}</div>
     </div>
   );
-};
+});
 
 export default StreamMessage;

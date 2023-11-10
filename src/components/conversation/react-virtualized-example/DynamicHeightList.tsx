@@ -13,11 +13,11 @@ import { ReducerType } from '../../../store/rootReducer';
 import { AppThunkDispatch } from '../../../store/store';
 import { getPrevConversationAsyncThunk } from '../../../store/thunk/conversationAsyncThunk';
 
-const cache = new CellMeasurerCache({
-  fixedWidth: true,
-  minHeight: 50,
-  defaultHeight: 500,
-});
+// const cache = new CellMeasurerCache({
+//   fixedWidth: true,
+//   minHeight: 50,
+//   defaultHeight: 500,
+// });
 
 interface DynamicheightListProps {
   height: number;
@@ -30,6 +30,16 @@ const DynamicHeightList = React.memo(({ height, width }: DynamicheightListProps)
   );
   const infinityLoaderRef = useRef<InfiniteLoader>(null);
   const listRef = useRef<List>(null);
+
+  const cache = useMemo(
+    () =>
+      new CellMeasurerCache({
+        fixedWidth: true,
+        minHeight: 50,
+        defaultHeight: 600,
+      }),
+    [height, width],
+  );
 
   const rowRenderer = ({ index, parent, style, key }: ListRowProps) => {
     if (!isRowLoaded({ index })) {
@@ -83,6 +93,7 @@ const DynamicHeightList = React.memo(({ height, width }: DynamicheightListProps)
         return (
           <>
             <List
+              id="dynamic-height-list"
               style={{ transform: `scaleY(-1)` }}
               ref={listRef}
               deferredMeasurementCache={cache}

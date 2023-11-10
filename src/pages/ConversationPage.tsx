@@ -14,10 +14,11 @@ import VirtualizedConversationList from '../components/conversation/react-virtua
 
 const ConversationPage = () => {
   const conversationContainerRef = useRef<HTMLDivElement>(null);
+  const streamMessageRef = useRef<HTMLDivElement>(null);
 
   const isAtBottom = useAtBottom({ offset: 0, ref: conversationContainerRef });
 
-  const { startConversation } = useChat();
+  const { startConversation, streamMessage } = useChat();
 
   // const { height, top } = useResizeObserver({
   //   ref: virtuosoRef,
@@ -28,22 +29,36 @@ const ConversationPage = () => {
   // });
 
   const scrollToBottom = () => {
+    console.log('callback>>>>');
+    // console.log(conversationContainerRef.current?.scrollHeight);
     conversationContainerRef.current?.scrollTo({
       top: conversationContainerRef.current.scrollHeight,
     });
   };
 
+  const { height } = useResizeObserver({
+    ref: streamMessageRef,
+    callback: scrollToBottom,
+    isResize: isAtBottom,
+  });
+
   const dispatch = useDispatch<AppThunkDispatch>();
 
   useEffect(() => {
-    dispatch(getPrevConversationAsyncThunk({ conversationId: 'test', offset: 0, limit: 50 }));
+    dispatch(getPrevConversationAsyncThunk({ conversationId: 'test', offset: 0, limit: 50 })).then(
+      () =>
+        setTimeout(() => {
+          scrollToBottom();
+        }, 300),
+    );
   }, []);
 
   return (
     <div className="conversation-container" ref={conversationContainerRef}>
-      {/* <ConversationList customScrollParent={conversationContainerRef} /> */}
-      <VirtualizedConversationList />
-      <StreamMessage />
+      <ConversationList customScrollParent={conversationContainerRef} />
+      {/* <VirtualizedConversationList /> */}
+      <StreamMessage message={streamMessage} ref={streamMessageRef} />
+      <div style={{ height: '12rem' }} />
       <FormField
         className="conversation-formfield"
         isLoading
